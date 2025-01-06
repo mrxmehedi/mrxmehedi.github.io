@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encryption Text [X]</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #000000; /* Black background */
+            color: #ecf0f1; /* White text color for contrast */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        h1 {
+            font-size: 2rem;
+            color: #ecf0f1;
+            margin-bottom: 20px;
+            animation: fadeIn 2s ease-in-out;
+        }
+        textarea {
+            width: 80%;
+            height: 100px;
+            margin-bottom: 20px;
+            font-size: 16px;
+            padding: 10px;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            outline: none;
+            transition: all 0.3s ease;
+            background-color: #2c3e50;
+            color: #ecf0f1;
+        }
+        textarea:focus {
+            border-color: #3498db;
+        }
+        /* Button Styles */
+        button {
+            padding: 12px 24px;
+            font-size: 16px;
+            margin: 10px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            transition: transform 0.2s ease-in-out;
+        }
+        .encrypt-btn {
+            background-color: #3498db; /* Blue for Encryption */
+            color: white;
+        }
+        .decrypt-btn {
+            background-color: #e74c3c; /* Red for Decryption */
+            color: white;
+        }
+        .clear-btn {
+            background-color: #2ecc71; /* Green for Clear */
+            color: white;
+        }
+        button:hover {
+            transform: scale(1.1);
+        }
+        /* Output Section */
+        .output {
+            margin-top: 30px;
+            font-weight: bold;
+            font-size: 18px;
+            color: #ecf0f1;
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+        /* Animation Styles */
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+        .typing-effect {
+            font-family: 'Courier New', monospace;
+            display: inline-block;
+            border-right: 2px solid white;
+            animation: typing 3s steps(30) 1s forwards, blink 0.75s step-end infinite;
+        }
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+        @keyframes blink {
+            50% { border-color: transparent; }
+        }
+
+        /* Animation for the buttons */
+        @keyframes buttonAnim {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+        button {
+            animation: buttonAnim 1.5s infinite;
+        }
+
+    </style>
+</head>
+<body>
+
+    <h1>Encryption Text [X]</h1>
+    
+    <textarea id="inputText" placeholder="Enter your text here..."></textarea><br>
+    
+    <!-- Buttons placed side by side -->
+    <div style="display: flex; gap: 20px;">
+        <button class="encrypt-btn" onclick="encryptText()">Encrypt</button>
+        <button class="decrypt-btn" onclick="decryptText()">Decrypt</button>
+    </div>
+
+    <button class="clear-btn" onclick="clearText()">Clear</button> <!-- Clear Button -->
+    
+    <div class="output" id="outputText">
+        <p id="outputTextContent"></p>
+    </div>
+
+    <script>
+        const SHIFT_STEP = 3; // Shift step for encryption/decryption
+
+        // Encryption function
+        function encryptText() {
+            const text = document.getElementById("inputText").value;
+            if (!text) {
+                alert("Please enter some text!");
+                return;
+            }
+            let encryptedText = "";
+            for (let char of text) {
+                encryptedText += String.fromCharCode(char.charCodeAt(0) + SHIFT_STEP);
+            }
+            showOutput(encryptedText, 'Encrypted');
+        }
+
+        // Decryption function
+        function decryptText() {
+            const text = document.getElementById("inputText").value;
+            if (!text) {
+                alert("Please enter some text!");
+                return;
+            }
+            let decryptedText = "";
+            for (let char of text) {
+                decryptedText += String.fromCharCode(char.charCodeAt(0) - SHIFT_STEP);
+            }
+            showOutput(decryptedText, 'Decrypted');
+        }
+
+        // Show output with typing effect
+        function showOutput(text, type) {
+            const outputDiv = document.getElementById("outputText");
+            const outputContent = document.getElementById("outputTextContent");
+            outputContent.textContent = `${type} Text: `;
+            const typingSpan = document.createElement("span");
+            typingSpan.classList.add("typing-effect");
+            typingSpan.textContent = text;
+            outputContent.appendChild(typingSpan);
+
+            outputDiv.style.visibility = "visible"; // Keep output visible
+            outputDiv.style.opacity = "1"; // Ensure output is visible
+        }
+
+        // Clear input and output
+        function clearText() {
+            document.getElementById("inputText").value = ""; // Clear input text
+            document.getElementById("outputText").style.visibility = "hidden"; // Hide output
+            document.getElementById("outputTextContent").textContent = ""; // Clear output text
+        }
+    </script>
+    
+
+</body>
+</html>
